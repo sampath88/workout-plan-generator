@@ -3,10 +3,13 @@ import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
   return (
-    <div className="App bg-gray-900 antialiased">
+    <div className="no-scrollbar max-w-7xl mx-auto bg-transparent antialiased overflow-auto h-full scroll-smooth">
       {/* <Navbar /> */}
       <Outlet />
     </div>
   );
 };
 export default MainLayout;
+
+
+// bg-gradient-to-b from-black to-[#06080A]
