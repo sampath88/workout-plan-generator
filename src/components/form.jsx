@@ -1,5 +1,5 @@
 const Form = ({ children }) => {
-  return <div>{children}</div>;
+  return <div className="h-full overflow-auto">{children}</div>;
 };
 
 export default Form;

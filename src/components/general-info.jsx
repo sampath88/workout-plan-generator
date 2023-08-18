@@ -1,6 +1,6 @@
 const GeneralInfo = () => {
   return (
-    <div>
+    <div className="h-full overflow-auto p-2 pb-32">
       <div className="m-2">
         <h5 class="text-xl font-bold dark:text-white">General Info</h5>
       </div>

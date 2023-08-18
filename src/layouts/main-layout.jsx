@@ -3,9 +3,9 @@ import { Outlet } from "react-router-dom";
 
 const MainLayout = () => {
   return (
-    <div >
+    <div  className="flex flex-col h-full">
       <Navbar />
-      <div className="no-scrollbar max-w-7xl mx-auto antialiased overflow-auto h-full scroll-smooth">
+      <div className="flex-1 no-scrollbar max-w-7xl w-full mx-auto antialiased overflow-hidden h-full scroll-smooth">
         <Outlet />
       </div>
     </div>
