@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 const LandingPage = () => {
   const navigate = useNavigate();
   const navigateToGenerateWorkout = () => {
+    console.log("generate workout")
     navigate("/generate-workout");
   };
   return (
@@ -21,19 +22,11 @@ const LandingPage = () => {
                 All progress takes place outside the comfort zone
               </p>
               <div className="flex flex-col space-y-4 sm:items-center sm:justify-center sm:flex-row sm:space-y-0 sm:space-x-4 lg:justify-start">
-                <a
+                <button
                   onClick={navigateToGenerateWorkout}
-                  rel="noopener noreferrer"
-                  href="#"
                   className="px-8 py-3 text-lg text-gray-300 font-semibold rounded dark:bg-[#CB2042] capitalize">
                   Generate workout plan
-                </a>
-                {/* <a
-              rel="noopener noreferrer"
-              href="#"
-              className="px-8 py-3 text-lg text-gray-300 font-semibold border rounded dark:border-gray-100">
-              Malesuada
-            </a> */}
+                </button>
               </div>
             </div>
             <div className="flex items-center justify-center pt-12 mt-8 lg:mt-0 h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128">

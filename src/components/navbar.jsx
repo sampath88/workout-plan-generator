@@ -1,25 +1,28 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation, Link, NavLink } from "react-router-dom";
 import dumbbells from "assets/dumbbells.svg";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const navigateToGenerateWorkout = () => {
     navigate("/generate-workout");
   };
   return (
     <nav className="bg-white dark:bg-gray-800 sticky w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="https://flowbite.com/" className="flex items-center">
+        <Link to="home" className="flex items-center">
           <img src={dumbbells} className="h-12 mr-0" alt="Be Fit logo" />
           <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-[#CB2042]">
             BeFit
           </span>
-        </a>
+        </Link>
         <div className="flex md:order-2">
           <button
             onClick={navigateToGenerateWorkout}
             type="button"
-            className="text-white bg-[#c12342] capitalize hover:bg-[#d52145] focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0  ">
+            className={`${
+              pathname.includes("generate-workout") ? "hidden" : ""
+            } text-white bg-[#c12342] capitalize hover:bg-[#d52145] focus:ring-4 focus:ring-[#6b3743] focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0`}>
             Generate workout plan
           </button>
           <button
@@ -50,28 +53,26 @@ const Navbar = () => {
           id="navbar-sticky">
           <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-800 dark:border-gray-700">
             <li>
-              <a
-                href="#"
-                className="block py-2 pl-3 pr-4 text-[#ff2a55]  md:p-0"
-                aria-current="page">
+              <NavLink
+                to="home"
+                className={({ isActive, isPending }) =>
+                  `${
+                    isActive ? "text-[#ff2a55]" : "text-white"
+                  } block py-2 pl-3 pr-4 md:p-0`
+                }>
                 Home
-              </a>
+              </NavLink>
             </li>
             <li>
-              <a
-                href="#"
-                className="block py-2 pl-3 pr-4 text-white  md:p-0"
-                aria-current="page">
-                Settings
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="block py-2 pl-3 pr-4 text-white  md:p-0"
-                aria-current="page">
-                Profile
-              </a>
+              <NavLink
+                to="history"
+                className={({ isActive, isPending }) =>
+                  `${
+                    isActive ? "text-[#ff2a55]" : "text-white"
+                  } block py-2 pl-3 pr-4 md:p-0`
+                }>
+                History
+              </NavLink>
             </li>
           </ul>
         </div>
