@@ -1,8 +1,8 @@
-import { Outlet, useLocation, useNavigate, useMatch } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { setActiveForm } from "store/generateWorkoutSlice";
 import { useEffect } from "react";
-import { camelCaseToTitleCase, checkHasEmptyValues } from "util/util";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { setActiveForm } from "store/generateWorkoutSlice";
+import { camelCaseToTitleCase } from "util/util";
 
 const GenerateWorkoutPlan = () => {
   const formData = useSelector((state) => state.workoutFormData);

@@ -1,9 +1,9 @@
 import useDebounce from "hooks/use-debounce";
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { updateFormData } from "store/workoutFormSlice.js";
-import { Outlet, useLocation, useNavigate, useMatch } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { setActiveForm } from "store/generateWorkoutSlice";
+import { updateFormData } from "store/workoutFormSlice.js";
 
 const GeneralInfo = () => {
   const formData = useSelector((state) => state.workoutFormData);
@@ -17,8 +17,6 @@ const GeneralInfo = () => {
   }, 200);
 
   useEffect(() => {
-    //set active form
-    // console.log("setActiveForm: ", pathname);
     dispatch(setActiveForm({ activeForm: pathname }));
   }, []);
   return (

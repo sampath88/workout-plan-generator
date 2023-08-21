@@ -1,5 +1,5 @@
-import { useNavigate, useLocation, Link, NavLink } from "react-router-dom";
 import dumbbells from "assets/dumbbells.svg";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();

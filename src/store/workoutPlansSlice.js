@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   activePlan: "",
-  history: [],
+  history: []
 };
 
 export const workoutPlanSlice = createSlice({
@@ -17,9 +17,13 @@ export const workoutPlanSlice = createSlice({
       const { newPlan } = action.payload;
       state.history.push(newPlan);
     },
-  },
+    setHistory: (state, action) => {
+      const { history } = action.payload;
+      state.history = history;
+    }
+  }
 });
 
-export const { setActivePlan, addPlan } = workoutPlanSlice.actions;
+export const { setActivePlan, addPlan, setHistory } = workoutPlanSlice.actions;
 const workoutPlanReducer = workoutPlanSlice.reducer;
 export default workoutPlanReducer;

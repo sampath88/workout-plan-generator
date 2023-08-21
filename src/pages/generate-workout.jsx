@@ -1,21 +1,20 @@
 import Form from "components/form";
 import TickIcon from "components/icons/tick";
-import { Outlet, useLocation, useNavigate, useMatch } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { setActiveForm } from "store/generateWorkoutSlice";
-import { checkHasEmptyValues } from "util/util";
-import { useRef, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { useMutation } from "react-query";
+import Loader from "components/loader";
 import useLocalStorage from "hooks/use-local-storage";
 import OpenAI from "openai";
-import { setActivePlan, addPlan } from "store/workoutPlansSlice";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Outlet, useNavigate } from "react-router-dom";
+import { addPlan, setActivePlan } from "store/workoutPlansSlice";
+import { checkHasEmptyValues } from "util/util";
+import { v4 as uuidv4 } from "uuid";
 
 //add form step routes here
 const formSteps = [
   "general-info",
   "workout-preferences",
-  "generate-workout-plan",
+  "generate-workout-plan"
 ];
 
 const GenerateWorkout = () => {
@@ -23,13 +22,12 @@ const GenerateWorkout = () => {
   const { activeForm } = useSelector((state) => state.generateWorkout);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const dispatchData = useDispatch();
-  const [, dispatch] = useLocalStorage("workout-plans", []);
-  const urlRef = useRef(null);
+  const dispatch = useDispatch();
+  const [, setLocalStorage] = useLocalStorage("workout-plans", []);
 
   const openai = new OpenAI({
     apiKey: process.env.REACT_APP_OPENAI_API_KEY, //
-    dangerouslyAllowBrowser: true,
+    dangerouslyAllowBrowser: true
   });
   const handleGenerate = async (e) => {
     e.preventDefault();
@@ -40,8 +38,7 @@ const GenerateWorkout = () => {
       properties: {
         overview: {
           type: "string",
-          description:
-            "Give some brief about the workout plan and health gains",
+          description: "Give some brief about the workout plan and health gains"
         },
         days: {
           type: "array",
@@ -51,14 +48,22 @@ const GenerateWorkout = () => {
             properties: {
               day: {
                 type: "string",
-                description: "Day of the workout",
+                description: "Day of the workout"
               },
               describe: {
                 type: "string",
-                description: "Description of the workout",
+                description: "Small description about the workout"
               },
-            },
-          },
+              steps: {
+                type: "array",
+                description: "Give step by step plan for that day",
+                items: {
+                  type: "string",
+                  description: "Tell what to do"
+                }
+              }
+            }
+          }
         },
         tips: {
           type: "array",
@@ -67,13 +72,13 @@ const GenerateWorkout = () => {
             type: "object",
             properties: {
               tip: {
-                type: "string",
-              },
-            },
-          },
-        },
+                type: "string"
+              }
+            }
+          }
+        }
       },
-      required: ["overview", "days", "tips"],
+      required: ["overview", "days", "tips"]
     };
 
     try {
@@ -81,30 +86,36 @@ const GenerateWorkout = () => {
         model: "gpt-3.5-turbo",
         messages: [
           { role: "system", content: "You are a helpful workout mentor." },
-          { role: "user", content: prompt },
+          { role: "user", content: prompt }
         ],
         functions: [{ name: "workout_plan", parameters: schema }],
-        function_call: { name: "workout_plan" },
+        function_call: { name: "workout_plan" }
       });
       console.log("res: ", completion);
       let data = parseOpenAiResponse(completion);
       if (!data.overview) return;
       let plan = {
         id: uuidv4(),
-        workoutData: data,
+        workoutData: data
       };
-      dispatch((prevState) => {
-        debugger;
-        console.log("prevState: ", prevState);
-        return [...prevState, plan];
-      });
-      dispatchData(setActivePlan({ activePlan: plan }));
-      dispatchData(addPlan({ newPlan: plan }));
+      await storeIt(plan);
+      dispatch(setActivePlan({ activePlan: plan }));
+      dispatch(addPlan({ newPlan: plan }));
       navigate("/home");
     } catch (e) {
       console.log("something went wront: ", e);
     }
     setLoading(false);
+  };
+
+  const storeIt = async (plan) => {
+    console.log("storeIt: ", plan);
+    setLocalStorage([{...plan}]);
+    // setLocalStorage((prevState) => {
+    //   debugger;
+    //   console.log("prevState: ", prevState);
+    //   return [...prevState, { ...plan }];
+    // });
   };
 
   const parseOpenAiResponse = (res) => {
@@ -126,7 +137,7 @@ const GenerateWorkout = () => {
       fitnessLevel: formData.fitnessLevel,
       fitnessGoal: formData.fitnessGoal,
       workoutDuration: `${formData.workoutDuration} minutes`,
-      preferredExercises: formData.preferredExercises,
+      preferredExercises: formData.preferredExercises
     };
     let prompt = `Generate a Week workout plan for below preferences
       {
@@ -140,16 +151,6 @@ const GenerateWorkout = () => {
       Give it in a descriptive manner. 
       Generate for whole week
       `;
-    // Note: Give the response in html markup without <head> content and body tag and use tailwind css
-    // and maintain the Headings and sub-headings and description text font sizes properly,
-    // Response should be like this:
-    // <div className="mb-8">
-    //   <h1 className="text-3xl font-semibold mb-4">$day</h1>
-    //   <p className="text-base font-normal mb-4">$description</p>
-    // </div>
-    // keep the className in camelCase only
-    // Repeat same for all days
-
     return prompt;
   };
 
@@ -161,7 +162,7 @@ const GenerateWorkout = () => {
         gender,
         fitnessLevel,
         workoutDuration,
-        fitnessGoal,
+        fitnessGoal
       ])
     ) {
       return true;
@@ -196,6 +197,16 @@ const GenerateWorkout = () => {
   };
   return (
     <div className="flex flex-col h-full">
+      {loading ? (
+        <Loader>
+          <div className="flex flex-col justify-center items-center">
+            <span>Generating...</span>
+            <div>
+              <span>It may take few seconds!</span>
+            </div>
+          </div>
+        </Loader>
+      ) : null}
       <div className="flex justify-center p-2 py-8">
         <h3 className="text-4xl font-bold dark:text-white">
           Generate Workout Plan

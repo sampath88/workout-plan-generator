@@ -1,21 +1,20 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-  redirect,
-  useLocation,
-} from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
-import "./App.css";
+import GeneralInfo from "components/general-info";
+import GenerateWorkoutPlan from "components/generate-workout-plan";
+import WorkoutPreferences from "components/workout-preferences";
 import MainLayout from "layouts/main-layout";
+import ErrorPage from "pages/error-page";
+import GenerateWorkout from "pages/generate-workout";
 import HomePage from "pages/home-page";
 import LandingPage from "pages/landing-page";
-import GenerateWorkout from "pages/generate-workout";
-import GeneralInfo from "components/general-info";
-import WorkoutPreferences from "components/workout-preferences";
+import { QueryClient, QueryClientProvider } from "react-query";
 import { Provider } from "react-redux";
+import {
+  RouterProvider,
+  createBrowserRouter,
+  redirect
+} from "react-router-dom";
 import { store } from "store/store";
-import ErrorPage from "pages/error-page";
-import GenerateWorkoutPlan from "components/generate-workout-plan";
+import "./App.css";
 const queryClient = new QueryClient();
 const isNewUser = async () => {
   console.debug("isNewuser");

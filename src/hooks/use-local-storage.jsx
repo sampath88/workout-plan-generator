@@ -4,6 +4,10 @@ const useLocalStorage = (key, initialValue) => {
   const [value, setValue] = useState(() => {
     let currentValue;
     try {
+      let item = localStorage.getItem(key);
+      console.log("key: ", key);
+      console.log(initialValue);
+      console.log("item: ", item);
       currentValue = JSON.parse(
         localStorage.getItem(key) || JSON.stringify(initialValue)
       );
@@ -15,7 +19,7 @@ const useLocalStorage = (key, initialValue) => {
 
   useEffect(() => {
     debugger;
-    console.debug("debug: ",value);
+    console.debug("debug: ", value);
     localStorage.setItem(key, JSON.stringify(value));
   }, [value, key]);
 

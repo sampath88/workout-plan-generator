@@ -1,9 +1,9 @@
 import useDebounce from "hooks/use-debounce";
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { setActiveForm } from "store/generateWorkoutSlice";
 import { exercisesMap, updateFormData } from "store/workoutFormSlice.js";
-import { Outlet, useLocation, useNavigate, useMatch } from "react-router-dom";
 
 const WorkoutPreferences = () => {
   const formData = useSelector((state) => state.workoutFormData);
