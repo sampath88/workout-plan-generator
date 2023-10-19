@@ -1,8 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const getInitialState = () => {
+  let workoutPlans = localStorage.getItem("workout-plans");
+  if (!workoutPlans) return [];
+  return JSON.parse(workoutPlans);
+};
+
+const getActivePlan = () => {
+  let workoutPlans = getInitialState();
+  if (workoutPlans.length) return workoutPlans[workoutPlans.length - 1];
+  return "";
+};
+
 const initialState = {
-  activePlan: "",
-  history: []
+  activePlan: getActivePlan(),
+  history: getInitialState()
 };
 
 export const workoutPlanSlice = createSlice({

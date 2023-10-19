@@ -15,6 +15,7 @@ import {
 } from "react-router-dom";
 import { store } from "store/store";
 import "./App.css";
+import HistoryPage from "pages/history-page";
 const queryClient = new QueryClient();
 const isNewUser = async () => {
   console.debug("isNewuser");
@@ -61,7 +62,7 @@ const router = createBrowserRouter([
       },
       {
         path: "history",
-        element: <HomePage />,
+        element: <HistoryPage />,
       },
       {
         path: "generate-workout",

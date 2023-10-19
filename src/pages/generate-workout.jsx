@@ -23,7 +23,7 @@ const GenerateWorkout = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [, setLocalStorage] = useLocalStorage("workout-plans", []);
+  const [workoutPlans, setWorkoutPlans] = useLocalStorage("workout-plans", []);
 
   const openai = new OpenAI({
     apiKey: process.env.REACT_APP_OPENAI_API_KEY, //
@@ -98,9 +98,11 @@ const GenerateWorkout = () => {
         id: uuidv4(),
         workoutData: data
       };
-      await storeIt(plan);
+      storeIt(plan);
       dispatch(setActivePlan({ activePlan: plan }));
       dispatch(addPlan({ newPlan: plan }));
+      console.log("workoutPlans: ", workoutPlans);
+      debugger;
       navigate("/home");
     } catch (e) {
       console.log("something went wront: ", e);
@@ -108,14 +110,10 @@ const GenerateWorkout = () => {
     setLoading(false);
   };
 
-  const storeIt = async (plan) => {
-    console.log("storeIt: ", plan);
-    setLocalStorage([{...plan}]);
-    // setLocalStorage((prevState) => {
-    //   debugger;
-    //   console.log("prevState: ", prevState);
-    //   return [...prevState, { ...plan }];
-    // });
+  const storeIt = (plan) => {
+    setWorkoutPlans((prevState) => {
+      return [...prevState, { ...plan }];
+    });
   };
 
   const parseOpenAiResponse = (res) => {

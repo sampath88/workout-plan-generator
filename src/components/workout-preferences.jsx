@@ -16,7 +16,7 @@ const WorkoutPreferences = () => {
     let key = event.target.name;
     let value = event.target.value;
     dispatch(updateFormData({ key, value }));
-  }, 100);
+  }, 0);
   const checkHasThisItem = (item) => {
     let preferredExercises = formData.preferredExercises;
     if (preferredExercises.includes(item)) {
